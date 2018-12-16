@@ -1,0 +1,24 @@
+{
+    "name": "zafex/viloveul-http",
+    "description": "Http component of Viloveul.",
+    "type": "framework",
+    "license": "MIT",
+    "authors": [{
+        "name": "Fajrul Akbar Zuhdi",
+        "email": "fajrulaz@gmail.com"
+    }],
+    "keywords": ["framework", "micro", "zafex", "viloveul", "fajrulaz", "http"],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true
+    },
+    "require": {
+        "symfony/http-foundation": "^3.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Viloveul\\Http\\": "src/"
+        }
+    }
+}
