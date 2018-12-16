@@ -15,5 +15,5 @@ interface Response
      * @param $code
      * @param $text
      */
-    public function setStatusCode($code, $text = null);
+    public function setStatus($code, $text = null);
 }
