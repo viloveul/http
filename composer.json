@@ -1,13 +1,13 @@
 {
-    "name": "zafex/viloveul-http",
+    "name": "viloveul/http",
     "description": "Http component of Viloveul.",
-    "type": "framework",
+    "type": "component",
     "license": "MIT",
     "authors": [{
         "name": "Fajrul Akbar Zuhdi",
         "email": "fajrulaz@gmail.com"
     }],
-    "keywords": ["framework", "micro", "zafex", "viloveul", "fajrulaz", "http"],
+    "keywords": ["component", "zafex", "viloveul", "fajrulaz", "http"],
     "minimum-stability": "dev",
     "prefer-stable": true,
     "config": {
