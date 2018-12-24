@@ -4,6 +4,14 @@ namespace Viloveul\Http\Contracts;
 
 interface Response
 {
+    /**
+     * @param $status
+     * @param $title
+     * @param $detail
+     * @param null      $pointer
+     */
+    public function addError($status, $title, $detail = null, $pointer = null);
+
     public function send();
 
     /**
@@ -16,4 +24,9 @@ interface Response
      * @param $text
      */
     public function setStatus($code, $text = null);
+
+    /**
+     * @param $code
+     */
+    public function withError($code = null);
 }
