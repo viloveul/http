@@ -30,6 +30,19 @@ class Response extends JsonResponse implements IResponse
         return $this;
     }
 
+    public function send()
+    {
+        if (count($this->errors) > 0) {
+            $this->setData([
+                'errors' => $this->errors,
+            ]);
+            if (0 === strpos($this->getStatusCode(), 2)) {
+                $this->setStatus(400);
+            }
+        }
+        return parent::send();
+    }
+
     /**
      * @param  $code
      * @param  $text
@@ -38,20 +51,5 @@ class Response extends JsonResponse implements IResponse
     public function setStatus($code, $text = null)
     {
         return $this->setStatusCode($code, $text);
-    }
-
-    /**
-     * @param  $code
-     * @return mixed
-     */
-    public function withError($code = null)
-    {
-        if (count($this->errors) > 0) {
-            is_null($code) or $this->setStatus($code);
-            $this->setData([
-                'errors' => $this->errors,
-            ]);
-        }
-        return $this;
     }
 }

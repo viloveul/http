@@ -24,9 +24,4 @@ interface Response
      * @param $text
      */
     public function setStatus($code, $text = null);
-
-    /**
-     * @param $code
-     */
-    public function withError($code = null);
 }
