@@ -2,54 +2,78 @@
 
 namespace Viloveul\Http;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Viloveul\Http\Contracts\Response as IResponse;
+use Zend\Diactoros\Response\JsonResponse;
 
 class Response extends JsonResponse implements IResponse
 {
     /**
-     * @var array
+     * @param array $data
+     * @param int   $status
+     * @param array $headers
+     * @param int   $encodingOptions
      */
-    protected $errors = [];
+    public function __construct($data = [], int $status = 200, array $headers = [], int $encodingOptions = JsonResponse::DEFAULT_JSON_FLAGS)
+    {
+        parent::__construct($data, $status, $headers, $encodingOptions);
+    }
+
+    public function send(): void
+    {
+        // Send response
+        if (!headers_sent()) {
+            // Headers
+            foreach ($this->getHeaders() as $name => $values) {
+                foreach ($values as $value) {
+                    header(sprintf('%s: %s', $name, $value), false);
+                }
+            }
+            header(
+                vsprintf('HTTP/%s %s %s', [
+                    $this->getProtocolVersion(),
+                    $this->getStatusCode(),
+                    $this->getReasonPhrase(),
+                ])
+            );
+        }
+        // Body
+        $body = $this->getBody();
+        if ($body->isSeekable()) {
+            $body->rewind();
+        }
+        $contentLength = $this->getHeaderLine('Content-Length');
+        if (!$contentLength) {
+            $contentLength = $body->getSize();
+        }
+        if (isset($contentLength)) {
+            $amountToRead = $contentLength;
+            while ($amountToRead > 0 && !$body->eof()) {
+                $data = $body->read(min(1, $amountToRead));
+                echo $data;
+                $amountToRead -= strlen($data);
+                if (connection_status() != CONNECTION_NORMAL) {
+                    break;
+                }
+            }
+        }
+    }
 
     /**
      * @param  $status
-     * @param  $title
-     * @param  $detail
-     * @param  null      $pointer
+     * @param  $phrase
      * @return mixed
      */
-    public function addError($status, $title, $detail = null, $pointer = null)
+    public function setStatus($status, $phrase = null): IResponse
     {
-        $this->errors[] = [
-            'status' => $status,
-            'title' => $title,
-            'detail' => $detail ?: $title,
-            'source' => ['pointer' => $pointer],
-        ];
-        return $this;
-    }
-
-    public function send()
-    {
-        if (count($this->errors) > 0) {
-            $this->setData([
-                'errors' => $this->errors,
-            ]);
-            if (0 === strpos($this->getStatusCode(), 2)) {
-                $this->setStatus(400);
-            }
-        }
-        return parent::send();
+        return $this->withStatus($status, $phrase ?: '');
     }
 
     /**
-     * @param  $code
-     * @param  $text
-     * @return mixed
+     * @param $status
+     * @param array     $errors
      */
-    public function setStatus($code, $text = null)
+    public function withErrors($status = self::STATUS_INTERNAL_SERVER_ERROR, array $errors = []): IResponse
     {
-        return $this->setStatusCode($code, $text);
+        return $this;
     }
 }
