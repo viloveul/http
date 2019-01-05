@@ -36,7 +36,6 @@ class Response extends JsonResponse implements IResponse
                 ])
             );
         }
-        // Body
         $body = $this->getBody();
         if ($body->isSeekable()) {
             $body->rewind();
@@ -74,6 +73,9 @@ class Response extends JsonResponse implements IResponse
      */
     public function withErrors($status = self::STATUS_INTERNAL_SERVER_ERROR, array $errors = []): IResponse
     {
-        return $this;
+        $response = $this->withPayload([
+            'errors' => $errors,
+        ]);
+        return $response->withStatus($status);
     }
 }

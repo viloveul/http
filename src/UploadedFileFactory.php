@@ -9,6 +9,22 @@ use Zend\Diactoros\UploadedFileFactory as ZendUploadedFileFactory;
 class UploadedFileFactory extends ZendUploadedFileFactory implements IUploadedFileFactory
 {
     /**
+     * @param array $files
+     */
+    public static function makeObjectUploadedFiles(array $files): array
+    {
+        return array_map(function ($file) {
+            return new UploadedFile(
+                $file['tmp_name'],
+                $file['size'],
+                $file['error'],
+                array_key_exists('name', $file) ? $file['name'] : null,
+                array_key_exists('type', $file) ? $file['type'] : null
+            );
+        }, $files);
+    }
+
+    /**
      * @param array $params
      */
     public static function normalizeUploadedFiles(array $params): array
@@ -27,14 +43,7 @@ class UploadedFileFactory extends ZendUploadedFileFactory implements IUploadedFi
                 }
             }
         }
-        return array_map(function ($file) {
-            return new UploadedFile(
-                $file['tmp_name'],
-                $file['size'],
-                $file['error'],
-                $file['name'],
-                $file['type']);
-        }, $uploadedFiles);
+        return $uploadedFiles;
     }
 
     /**

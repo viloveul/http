@@ -70,7 +70,8 @@ class RequestFactory implements IServerRequestFactory
      */
     protected static function prepareFiles(array $params)
     {
-        return UploadedFileFactory::normalizeUploadedFiles($params);
+        $files = UploadedFileFactory::normalizeUploadedFiles($params);
+        return UploadedFileFactory::makeObjectUploadedFiles($files);
     }
 
     /**
