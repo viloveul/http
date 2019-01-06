@@ -2,26 +2,28 @@
 
 namespace Viloveul\Http;
 
+use Psr\Http\Message\StreamInterface as IStream;
+use Psr\Http\Message\UploadedFileInterface as IUploadedFile;
 use Viloveul\Http\Contracts\UploadedFileFactory as IUploadedFileFactory;
 use Viloveul\Http\UploadedFile;
-use Zend\Diactoros\UploadedFileFactory as ZendUploadedFileFactory;
+use Zend\Diactoros as ZendDiactoros;
 
-class UploadedFileFactory extends ZendUploadedFileFactory implements IUploadedFileFactory
+class UploadedFileFactory implements IUploadedFileFactory
 {
     /**
-     * @param array $files
+     * @param IStream    $stream
+     * @param int        $size
+     * @param nullint    $error
+     * @param string     $filename
+     * @param nullstring $type
      */
-    public static function makeObjectUploadedFiles(array $files): array
+    public function createUploadedFile(IStream $stream, int $size = null, int $error = 0, string $filename = null, string $type = null): IUploadedFile
     {
-        return array_map(function ($file) {
-            return new UploadedFile(
-                $file['tmp_name'],
-                $file['size'],
-                $file['error'],
-                array_key_exists('name', $file) ? $file['name'] : null,
-                array_key_exists('type', $file) ? $file['type'] : null
-            );
-        }, $files);
+        if ($size === null) {
+            $size = $stream->getSize();
+        }
+
+        return new UploadedFile($stream, $size, $error, $filename, $type);
     }
 
     /**
@@ -29,37 +31,6 @@ class UploadedFileFactory extends ZendUploadedFileFactory implements IUploadedFi
      */
     public static function normalizeUploadedFiles(array $params): array
     {
-        $uploadedFiles = [];
-        if (isset($params) && !empty($params)) {
-            foreach ($params as $category => $files) {
-                foreach (['name', 'tmp_name', 'error', 'type', 'size'] as $key) {
-                    if (array_key_exists($key, $files)) {
-                        if (is_scalar($files[$key])) {
-                            $uploadedFiles[$category][$key] = $files[$key];
-                        } else {
-                            static::recursive($category, $files[$key], $key, $uploadedFiles);
-                        }
-                    }
-                }
-            }
-        }
-        return $uploadedFiles;
-    }
-
-    /**
-     * @param $category
-     * @param $file
-     * @param $key
-     * @param $files
-     */
-    protected static function recursive($category, $file, $key, &$files)
-    {
-        foreach ($file as $name => $value) {
-            if (is_scalar($value)) {
-                $files[$category . '.' . $name][$key] = $value;
-            } else {
-                static::recursive($category . '.' . $name, $value, $key, $files);
-            }
-        }
+        return ZendDiactoros\normalizeUploadedFiles($params);
     }
 }
