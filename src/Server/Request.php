@@ -3,6 +3,7 @@
 namespace Viloveul\Http\Server;
 
 use Viloveul\Http\Contracts\ServerRequest as IServerRequest;
+use Viloveul\Http\Contracts\ServerRequestAssignment as IServerRequestAssignment;
 use Zend\Diactoros\ServerRequest;
 
 class Request extends ServerRequest implements IServerRequest
@@ -49,5 +50,44 @@ class Request extends ServerRequest implements IServerRequest
             return $params[$name];
         }
         return $default;
+    }
+
+    /**
+     * @param  IServerRequestAssignment $object
+     * @return mixed
+     */
+    public function loadPostTo(IServerRequestAssignment $object): IServerRequestAssignment
+    {
+        $params = $this->getParsedBody() ?: [];
+        foreach ($params as $key => $value) {
+            $object->setAttribute($key, $value);
+        }
+        return $object;
+    }
+
+    /**
+     * @param  IServerRequestAssignment $object
+     * @return mixed
+     */
+    public function loadQueryTo(IServerRequestAssignment $object): IServerRequestAssignment
+    {
+        $params = $this->getQueryParams() ?: [];
+        foreach ($params as $key => $value) {
+            $object->setAttribute($key, $value);
+        }
+        return $object;
+    }
+
+    /**
+     * @param  IServerRequestAssignment $object
+     * @return mixed
+     */
+    public function loadServerTo(IServerRequestAssignment $object): IServerRequestAssignment
+    {
+        $params = $this->getServerParams() ?: [];
+        foreach ($params as $key => $value) {
+            $object->setAttribute($key, $value);
+        }
+        return $object;
     }
 }
