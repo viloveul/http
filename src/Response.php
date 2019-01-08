@@ -2,6 +2,7 @@
 
 namespace Viloveul\Http;
 
+use InvalidArgumentException;
 use Viloveul\Http\Contracts\Response as IResponse;
 use Zend\Diactoros\Response\JsonResponse;
 
@@ -68,13 +69,36 @@ class Response extends JsonResponse implements IResponse
     }
 
     /**
-     * @param $status
-     * @param array     $errors
+     * @param  $status
+     * @param  array     $errors
+     * @return mixed
      */
     public function withErrors($status = self::STATUS_INTERNAL_SERVER_ERROR, array $errors = []): IResponse
     {
+        $markedErrors = [];
+        foreach ($errors as $key => $values) {
+            if (is_scalar($values)) {
+                $error = [
+                    'source' => ['pointer' => ''],
+                    'detail' => $values,
+                ];
+                if (is_string($key)) {
+                    $error['title'] = $key;
+                }
+                $markedErrors[] = $error;
+            } else {
+                if (!array_key_exists('detail', $values)) {
+                    throw new InvalidArgumentException('Values must be an array of string or must be an array containing an array with index "detail"');
+                }
+                $error = [];
+                foreach ($values as $index => $value) {
+                    $error[$index] = $value;
+                }
+                $markedErrors[] = $error;
+            }
+        }
         $response = $this->withPayload([
-            'errors' => $errors,
+            'errors' => $markedErrors,
         ]);
         return $response->withStatus($status);
     }
