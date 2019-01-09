@@ -15,7 +15,6 @@ class Request extends ServerRequest implements IServerRequest
      */
     public function getPost(string $name, $default = null)
     {
-        $name = strtolower($name);
         $params = $this->getParsedBody();
         if (array_key_exists($name, $params)) {
             return $params[$name];
@@ -30,7 +29,6 @@ class Request extends ServerRequest implements IServerRequest
      */
     public function getQuery(string $name, $default = null)
     {
-        $name = strtolower($name);
         $params = $this->getQueryParams();
         if (array_key_exists($name, $params)) {
             return $params[$name];
@@ -44,7 +42,6 @@ class Request extends ServerRequest implements IServerRequest
      */
     public function getServer(string $name, $default = null)
     {
-        $name = strtolower($name);
         $params = $this->getServerParams();
         if (array_key_exists($name, $params)) {
             return $params[$name];
