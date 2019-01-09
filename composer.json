@@ -1,17 +1,24 @@
 {
     "name": "viloveul/http",
-    "description": "Http component of Viloveul.",
-    "type": "component",
+    "description": "Http Component of Viloveul, Implementation PSR HTTP Message with Zend Diactoros",
+    "type": "library",
     "license": "MIT",
+    "keywords": ["zafex", "viloveul", "fajrulaz", "http", "component", "library"],
+    "homepage": "http://www.viloveul.com",
+    "readme": "README.MD",
     "authors": [{
         "name": "Fajrul Akbar Zuhdi",
         "email": "fajrulaz@gmail.com"
     }],
-    "keywords": ["component", "zafex", "viloveul", "fajrulaz", "http"],
     "minimum-stability": "dev",
     "prefer-stable": true,
     "config": {
         "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "Viloveul\\Http\\": "src/"
+        }
     },
     "require": {
         "php": "~7.0",
@@ -20,10 +27,5 @@
     },
     "require-dev": {
         "symfony/var-dumper": "~3.4|~4.0"
-    },
-    "autoload": {
-        "psr-4": {
-            "Viloveul\\Http\\": "src/"
-        }
     }
 }
