@@ -87,8 +87,8 @@ class Response extends JsonResponse implements IResponse
                 }
                 $markedErrors[] = $error;
             } else {
-                if (!array_key_exists('detail', $values)) {
-                    throw new InvalidArgumentException('Values must be an array of string or must be an array containing an array with index "detail"');
+                if (!isset($values['detail'])) {
+                    throw new InvalidArgumentException('Values must be an array of string or must be an array containing an array with non-null index "detail"');
                 }
                 $error = [];
                 foreach ($values as $index => $value) {
