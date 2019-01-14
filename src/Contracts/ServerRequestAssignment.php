@@ -2,17 +2,16 @@
 
 namespace Viloveul\Http\Contracts;
 
-interface ServerRequestAssignment
+use ArrayAccess;
+use IteratorAggregate;
+use JsonSerializable;
+
+interface ServerRequestAssignment extends ArrayAccess, IteratorAggregate, JsonSerializable
 {
-    /**
-     * @param string     $key
-     * @param $default
-     */
-    public function getAttribute(string $key, $default = null);
+    public function getAttributes(): array;
 
     /**
-     * @param string   $key
-     * @param $value
+     * @param array $attributes
      */
-    public function setAttribute(string $key, $value = null);
+    public function setAttributes(array $attributes): void;
 }

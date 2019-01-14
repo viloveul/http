@@ -55,10 +55,7 @@ class Request extends ServerRequest implements IServerRequest
      */
     public function loadPostTo(IServerRequestAssignment $object): IServerRequestAssignment
     {
-        $params = $this->getParsedBody() ?: [];
-        foreach ($params as $key => $value) {
-            $object->setAttribute($key, $value);
-        }
+        $object->setAttributes($this->getParsedBody() ?: []);
         return $object;
     }
 
@@ -68,10 +65,7 @@ class Request extends ServerRequest implements IServerRequest
      */
     public function loadQueryTo(IServerRequestAssignment $object): IServerRequestAssignment
     {
-        $params = $this->getQueryParams() ?: [];
-        foreach ($params as $key => $value) {
-            $object->setAttribute($key, $value);
-        }
+        $object->setAttributes($this->getQueryParams() ?: []);
         return $object;
     }
 
@@ -81,10 +75,7 @@ class Request extends ServerRequest implements IServerRequest
      */
     public function loadServerTo(IServerRequestAssignment $object): IServerRequestAssignment
     {
-        $params = $this->getServerParams() ?: [];
-        foreach ($params as $key => $value) {
-            $object->setAttribute($key, $value);
-        }
+        $object->setAttributes($this->getServerParams() ?: []);
         return $object;
     }
 }
