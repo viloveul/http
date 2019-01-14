@@ -28,15 +28,11 @@ var_dump($param1, $param2, $param3);
 class SampleParam implements Viloveul\Http\Contracts\ServerRequestAssignment
 {
 	protected $attributes = [];
-	public function setAttribute(string $key, $value = null): void
+	public function setAttributes(array $attributes): void
 	{
-		$this->attributes[$key] = $value;
+		$this->attributes = $attributes;
 	}
-	public function getAttribute(string $key, $default = null)
-	{
-		return array_key_exists($key, $this->attributes) ? $this->attributes[$key] : $default;
-	}
-	public function all():array
+	public function getAttributes(): array
 	{
 		return $this->attributes;
 	}
