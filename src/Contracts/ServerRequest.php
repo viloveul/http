@@ -8,6 +8,12 @@ use Viloveul\Http\Contracts\ServerRequestAssignment;
 interface ServerRequest extends ServerRequestInterface
 {
     /**
+     * @param string $follower
+     * @param array  $qs
+     */
+    public function getBaseUrl(string $follower, array $qs): string;
+
+    /**
      * @param string $name
      */
     public function getPost(string $name, $default = null);
