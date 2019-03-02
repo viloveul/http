@@ -9,6 +9,39 @@ use Zend\Diactoros\ServerRequest;
 class Request extends ServerRequest implements IServerRequest
 {
     /**
+     * @var mixed
+     */
+    protected $myBaseUrl = null;
+
+    /**
+     * @param string $follower
+     * @param array  $qs
+     */
+    public function getBaseUrl(string $follower = '/', array $qs = []): string
+    {
+        if (is_null($this->myBaseUrl)) {
+            $uri = $this->getUri();
+            $this->myBaseUrl = $uri->getScheme() . '://' . $uri->getHost();
+            if ($port = $uri->getPort()) {
+                $this->myBaseUrl .= ":{$port}";
+            }
+        }
+        if (strpos($follower, '?') !== false) {
+            $parts = explode('?', $follower, 2);
+            $follower = $parts[0];
+            if (!empty($parts[1])) {
+                parse_str($parts[1], $tmp);
+                $qs = array_merge($tmp, $qs);
+            }
+        }
+        $res = rtrim($this->myBaseUrl . '/' . trim($follower, '/'), '/');
+        if (!empty($qs)) {
+            $res .= '?' . http_build_query($qs);
+        }
+        return $res;
+    }
+
+    /**
      * @param  string     $name
      * @param  $default
      * @return mixed
