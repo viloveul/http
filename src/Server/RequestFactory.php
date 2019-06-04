@@ -2,11 +2,11 @@
 
 namespace Viloveul\Http\Server;
 
-use Psr\Http\Message\ServerRequestFactoryInterface as IServerRequestFactory;
-use Psr\Http\Message\ServerRequestInterface as IServerRequest;
-use Viloveul\Http\Server\Request as ServerRequest;
 use Viloveul\Http\UploadedFileFactory;
 use Zend\Diactoros as ZendDiactorosFunction;
+use Viloveul\Http\Server\Request as ServerRequest;
+use Psr\Http\Message\ServerRequestInterface as IServerRequest;
+use Psr\Http\Message\ServerRequestFactoryInterface as IServerRequestFactory;
 
 class RequestFactory implements IServerRequestFactory
 {

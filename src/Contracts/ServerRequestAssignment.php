@@ -3,8 +3,8 @@
 namespace Viloveul\Http\Contracts;
 
 use ArrayAccess;
-use IteratorAggregate;
 use JsonSerializable;
+use IteratorAggregate;
 
 interface ServerRequestAssignment extends ArrayAccess, IteratorAggregate, JsonSerializable
 {

@@ -2,9 +2,9 @@
 
 namespace Viloveul\Http\Server;
 
+use Zend\Diactoros\ServerRequest;
 use Viloveul\Http\Contracts\ServerRequest as IServerRequest;
 use Viloveul\Http\Contracts\ServerRequestAssignment as IServerRequestAssignment;
-use Zend\Diactoros\ServerRequest;
 
 class Request extends ServerRequest implements IServerRequest
 {
@@ -19,7 +19,7 @@ class Request extends ServerRequest implements IServerRequest
      */
     public function getBaseUrl(string $follower = '/', array $qs = []): string
     {
-        if (is_null($this->myBaseUrl)) {
+        if (null === $this->myBaseUrl) {
             $uri = $this->getUri();
             $this->myBaseUrl = $uri->getScheme() . '://' . $uri->getHost();
             if ($port = $uri->getPort()) {
