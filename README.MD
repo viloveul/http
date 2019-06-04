@@ -1,5 +1,3 @@
-
-
 # Installation (this package based on zend diactoros)
 
 make sure your php version > 7.0

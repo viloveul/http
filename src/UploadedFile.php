@@ -2,8 +2,8 @@
 
 namespace Viloveul\Http;
 
-use Viloveul\Http\Contracts\UploadedFile as IUploadedFile;
 use Zend\Diactoros\UploadedFile as ZendUploadedFile;
+use Viloveul\Http\Contracts\UploadedFile as IUploadedFile;
 
 class UploadedFile extends ZendUploadedFile implements IUploadedFile
 {

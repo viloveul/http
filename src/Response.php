@@ -3,19 +3,23 @@
 namespace Viloveul\Http;
 
 use InvalidArgumentException;
-use Viloveul\Http\Contracts\Response as IResponse;
 use Zend\Diactoros\Response\JsonResponse;
+use Viloveul\Http\Contracts\Response as IResponse;
 
 class Response extends JsonResponse implements IResponse
 {
     /**
-     * @param array $data
-     * @param int   $status
-     * @param array $headers
-     * @param int   $encodingOptions
+     * @param $data
+     * @param nullint $status
+     * @param array   $headers
+     * @param int     $encodingOptions
      */
-    public function __construct($data = [], int $status = 200, array $headers = [], int $encodingOptions = JsonResponse::DEFAULT_JSON_FLAGS)
-    {
+    public function __construct(
+        $data = null,
+        int $status = 200,
+        array $headers = [],
+        int $encodingOptions = JsonResponse::DEFAULT_JSON_FLAGS
+    ) {
         parent::__construct($data, $status, $headers, $encodingOptions);
     }
 
